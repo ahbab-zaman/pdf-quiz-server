@@ -1,7 +1,7 @@
-const { exec } = require("child_process");
-const path = require("path");
+import { exec } from "child_process";
+import path from "path";
 
-exports.extractDiagrams = (pdfPath) => {
+export const extractDiagrams = (pdfPath) => {
   return new Promise((resolve, reject) => {
     const scriptPath = path.resolve("python/extract_diagrams.py");
     exec(`python3 "${scriptPath}" "${pdfPath}"`, (error, stdout, stderr) => {

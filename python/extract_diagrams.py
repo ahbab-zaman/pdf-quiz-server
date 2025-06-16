@@ -23,13 +23,17 @@ def extract_images_from_pdf(pdf_path, output_folder):
                 output_path = os.path.join(output_folder, f"diagram_p{page_num+1}_{i}.png")
                 pix.save(output_path)
                 image_paths.append(output_path)
+            pix = None  # free Pixmap resources
 
-    for path in image_paths:
-        print(path)
+    return image_paths
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python extract_diagrams.py path_to_pdf")
-    else:
-        pdf_path = sys.argv[1]
-        extract_images_from_pdf(pdf_path, "./diagrams")
+        sys.exit(1)
+    pdf_path = sys.argv[1]
+    output_folder = "./diagrams"
+    images = extract_images_from_pdf(pdf_path, output_folder)
+    for image_path in images:
+        print(image_path)

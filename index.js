@@ -1,10 +1,22 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
-const connectDB = require("./config/db");
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+import connectDB from "./config/db.js";
+import quizRoutes from "./routes/quizRoutes.js";
+
+// Load env variables
+dotenv.config();
+
 const app = express();
 app.use(express.json());
+
+// Fix __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// CORS setup
 app.use(
   cors({
     origin: true,
@@ -12,11 +24,15 @@ app.use(
   })
 );
 
+// Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// Connect DB
 connectDB();
 
-app.use("/api/quiz", require("./routes/quizRoutes"));
+// API routes
+app.use("/api/quiz", quizRoutes);
 
-const PORT = 5000;
+// Start server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

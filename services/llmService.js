@@ -1,5 +1,6 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-require("dotenv").config();
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from "dotenv";
+dotenv.config();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
 
@@ -21,35 +22,28 @@ const quizModel = genAI.getGenerativeModel({
 });
 
 function sanitizeOption(opt) {
-  // If option is already a string, just return it
   if (typeof opt === "string") return opt;
 
-  // If it's an object, try to convert to string
   if (typeof opt === "object" && opt !== null) {
-    // You can customize this if you know possible keys
     if ("amount" in opt && "explanation" in opt) {
       return `${opt.amount} - ${opt.explanation}`;
     }
-    // fallback JSON stringify for unknown structures
     return JSON.stringify(opt);
   }
 
-  // For other types, convert to string safely
   return String(opt);
 }
 
-exports.getStructuredQuestions = async (pdfText) => {
+export const getStructuredQuestions = async (pdfText) => {
   try {
     const result = await quizModel.generateContent(pdfText);
     const response = await result.response;
     const text = await response.text();
 
-    // Remove markdown code blocks if present
     const cleaned = text.replace(/```json|```/g, "").trim();
 
     const parsed = JSON.parse(cleaned);
 
-    // Sanitize options: ensure all options are strings
     const sanitized = parsed.map((q) => ({
       question: q.question,
       options: q.options.map(sanitizeOption),

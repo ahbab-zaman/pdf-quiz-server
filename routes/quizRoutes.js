@@ -1,7 +1,8 @@
-const express = require("express");
-const multer = require("multer");
+import express from "express";
+import multer from "multer";
+import { processPDF } from "../controllers/quizController.js";
+
 const router = express.Router();
-const { processPDF } = require("../controllers/quizController"); // ✅ Correct import
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads"),
@@ -10,7 +11,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// ✅ Use processPDF directly — quizController is NOT defined
 router.post("/upload", upload.single("pdf"), processPDF);
 
-module.exports = router;
+export default router;
