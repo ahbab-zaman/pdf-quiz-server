@@ -7,11 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://digitalize-client.vercel.app",
-      "https://bucolic-sundae-2653c6.netlify.app",
-    ],
+    origin: true,
     credentials: true,
   })
 );
