@@ -1,8 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const Tesseract = require("tesseract.js");
-const { getStructuredQuestions } = require("../services/llmService");
-const { extractDiagrams } = require("../services/diagramService");
+import fs from "fs";
+import path from "path";
+import Tesseract from "tesseract.js";
+import { getStructuredQuestions } from "../services/llmService.js";
+import { extractDiagrams } from "../services/diagramService.js";
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 async function ocrImage(imagePath) {
   const {
@@ -11,11 +13,11 @@ async function ocrImage(imagePath) {
   return text;
 }
 
-exports.processPDF = async (req, res) => {
+export const processPDF = async (req, res) => {
   try {
     const filePath = req.file.path;
 
-    // ✅ Use your Python-powered diagram/image extractor
+    // ✅ Extract diagrams
     const images = await extractDiagrams(filePath);
     if (images.length === 0) {
       return res.status(400).json({ error: "No diagrams found in PDF" });
