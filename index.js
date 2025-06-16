@@ -34,7 +34,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 connectDB();
 
 // API routes
-app.use("/api/quiz", quizRoutes);
+app.use("/quiz", quizRoutes);
 app.use("/diagrams", express.static(path.join(__dirname, "diagrams")));
 
 // Start server
