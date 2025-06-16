@@ -32,6 +32,7 @@ connectDB();
 
 // API routes
 app.use("/api/quiz", quizRoutes);
+app.use("/diagrams", express.static(path.join(__dirname, "diagrams")));
 
 // Start server
 const PORT = process.env.PORT || 5000;
