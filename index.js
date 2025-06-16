@@ -19,7 +19,10 @@ const __dirname = path.dirname(__filename);
 // CORS setup
 app.use(
   cors({
-    origin: true,
+    origin: [
+      "http://localhost:5173",
+      "https://bucolic-sundae-2653c6.netlify.app",
+    ],
     credentials: true,
   })
 );
