@@ -50,9 +50,9 @@ export const processPDF = async (req, res) => {
       }
 
       // 🧼 Delete the image after processing
-      fs.unlink(imgPath, (err) => {
-        if (err) console.error(`Failed to delete ${imgPath}`, err);
-      });
+      // fs.unlink(imgPath, (err) => {
+      //   if (err) console.error(`Failed to delete ${imgPath}`, err);
+      // });
     }
 
     if (finalResult.length === 0) {
