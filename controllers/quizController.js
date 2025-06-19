@@ -37,10 +37,12 @@ export const processPDF = async (req, res) => {
       if (!text.trim()) continue;
 
       const questions = await getStructuredQuestions(text);
-      const relativePath = path
-        .relative(uploadsDir, imgPath)
-        .replace(/\\/g, "/");
-      const imageUrl = `${protocol}://${host}/diagrams/${relativePath}`;
+      // const relativePath = path
+      //   .relative(uploadsDir, imgPath)
+      //   .replace(/\\/g, "/");
+      // const imageUrl = `${protocol}://${host}/diagrams/${relativePath}`;
+      const filename = path.basename(imgPath);
+      const imageUrl = `${protocol}://${host}/diagrams/${filename}`;
 
       for (let q of questions) {
         finalResult.push({
