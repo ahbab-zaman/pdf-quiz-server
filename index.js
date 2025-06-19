@@ -22,6 +22,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://bucolic-sundae-2653c6.netlify.app",
+      "https://digitalize-client.vercel.app",
     ],
   })
 );
