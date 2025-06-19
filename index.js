@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import connectDB from "./config/db.js";
 import quizRoutes from "./routes/quizRoutes.js";
@@ -25,6 +26,12 @@ app.use(
   })
 );
 
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+  console.log("Created uploads folder");
+}
+
 // Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -34,6 +41,9 @@ connectDB();
 // API routes
 app.use("/quiz", quizRoutes);
 app.use("/diagrams", express.static(path.join(__dirname, "diagrams")));
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;
