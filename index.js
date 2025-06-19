@@ -22,9 +22,10 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://bucolic-sundae-2653c6.netlify.app",
-    ]
+    ],
   })
 );
+app.options("*", cors());
 
 // Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
