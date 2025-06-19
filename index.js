@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import path from "path";
@@ -7,7 +7,6 @@ import connectDB from "./config/db.js";
 import quizRoutes from "./routes/quizRoutes.js";
 
 // Load env variables
-dotenv.config();
 
 const app = express();
 app.use(express.json());

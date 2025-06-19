@@ -1,4 +1,3 @@
-import fs from "fs";
 import path from "path";
 import Tesseract from "tesseract.js";
 import { getStructuredQuestions } from "../services/llmService.js";
@@ -37,10 +36,6 @@ export const processPDF = async (req, res) => {
       if (!text.trim()) continue;
 
       const questions = await getStructuredQuestions(text);
-      // const relativePath = path
-      //   .relative(uploadsDir, imgPath)
-      //   .replace(/\\/g, "/");
-      // const imageUrl = `${protocol}://${host}/diagrams/${relativePath}`;
       const filename = path.basename(imgPath);
       const imageUrl = `${protocol}://${host}/diagrams/${filename}`;
 
