@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs";
 import Tesseract from "tesseract.js";
 import { getStructuredQuestions } from "../services/llmService.js";
 import { extractDiagrams } from "../services/diagramService.js";
@@ -8,7 +9,9 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 async function ocrImage(imagePath) {
   const {
     data: { text },
-  } = await Tesseract.recognize(imagePath, "eng");
+  } = await Tesseract.recognize(imagePath, "eng", {
+    logger: false,
+  });
   return text;
 }
 
@@ -16,7 +19,7 @@ export const processPDF = async (req, res) => {
   try {
     const filePath = req.file.path;
 
-    // ✅ Extract diagrams
+    // Extract diagrams (images)
     const images = await extractDiagrams(filePath);
     if (images.length === 0) {
       return res.status(400).json({ error: "No diagrams found in PDF" });
@@ -26,12 +29,10 @@ export const processPDF = async (req, res) => {
     const protocol = req.protocol;
     const uploadsDir = path.resolve(__dirname, "..", "diagrams");
 
-    const ocrResults = await Promise.all(images.map(ocrImage));
     const finalResult = [];
 
-    for (let i = 0; i < images.length; i++) {
-      const imgPath = images[i];
-      const text = ocrResults[i];
+    for (const imgPath of images) {
+      const text = await ocrImage(imgPath); // Sequential OCR
 
       if (!text.trim()) continue;
 
@@ -47,6 +48,11 @@ export const processPDF = async (req, res) => {
           answer: q.answer,
         });
       }
+
+      // 🧼 Delete the image after processing
+      fs.unlink(imgPath, (err) => {
+        if (err) console.error(`Failed to delete ${imgPath}`, err);
+      });
     }
 
     if (finalResult.length === 0) {
