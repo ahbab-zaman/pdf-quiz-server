@@ -55,9 +55,13 @@ This backend powers a PDF-to-quiz application that utilizes AI to generate quest
 - ⚙️ **Configurable via .env** – Secure environment variables through `dotenv`.
 - 🌍 **CORS Enabled** – Cross-origin support for frontend-backend interaction.
 
+## ✨ENV File
 
-```markdown
-## 📦 Dependencies
+- PORT=5000
+- MONGO_URI=your_mongo_connection_string
+- GEMINI_API=your_google_genai_api_key
+
+```## 📦 Dependencies
 
 - [express](https://expressjs.com/) – REST API framework
 - [mongoose](https://mongoosejs.com/) – MongoDB ODM
