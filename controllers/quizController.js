@@ -10,7 +10,7 @@ async function ocrImage(imagePath) {
   const {
     data: { text },
   } = await Tesseract.recognize(imagePath, "eng", {
-    logger: false,
+    logger: () => {}, // ✅ Use empty function to disable logging safely
   });
   return text;
 }
